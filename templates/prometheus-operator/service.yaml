@@ -2,11 +2,11 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ template "kube-prometheus-stack.fullname" . }}-operator
-  namespace: {{ template "kube-prometheus-stack.namespace" . }}
+  name: {{ template "unitest-stack.fullname" . }}-operator
+  namespace: {{ template "unitest-stack.namespace" . }}
   labels:
-    app: {{ template "kube-prometheus-stack.name" . }}-operator
-{{ include "kube-prometheus-stack.labels" . | indent 4 }}
+    app: {{ template "unitest-stack.name" . }}-operator
+{{ include "unitest-stack.labels" . | indent 4 }}
 {{- if .Values.prometheusOperator.service.labels }}
 {{ toYaml .Values.prometheusOperator.service.labels | indent 4 }}
 {{- end }}
@@ -52,7 +52,7 @@ spec:
     targetPort: https
   {{- end }}
   selector:
-    app: {{ template "kube-prometheus-stack.name" . }}-operator
+    app: {{ template "unitest-stack.name" . }}-operator
     release: {{ $.Release.Name | quote }}
   type: "{{ .Values.prometheusOperator.service.type }}"
 {{- end }}

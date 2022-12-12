@@ -2,12 +2,12 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ template "kube-prometheus-stack.fullname" . }}-prometheus
-  namespace: {{ template "kube-prometheus-stack.namespace" . }}
+  name: {{ template "unitest-stack.fullname" . }}-prometheus
+  namespace: {{ template "unitest-stack.namespace" . }}
   labels:
-    app: {{ template "kube-prometheus-stack.name" . }}-prometheus
+    app: {{ template "unitest-stack.name" . }}-prometheus
     self-monitor: {{ .Values.prometheus.serviceMonitor.selfMonitor | quote }}
-{{ include "kube-prometheus-stack.labels" . | indent 4 }}
+{{ include "unitest-stack.labels" . | indent 4 }}
 {{- if .Values.prometheus.service.labels }}
 {{ toYaml .Values.prometheus.service.labels | indent 4 }}
 {{- end }}
@@ -56,7 +56,7 @@ spec:
   publishNotReadyAddresses: {{ .Values.prometheus.service.publishNotReadyAddresses }}
   selector:
     app.kubernetes.io/name: prometheus
-    prometheus: {{ template "kube-prometheus-stack.prometheus.crname" . }}
+    prometheus: {{ template "unitest-stack.prometheus.crname" . }}
 {{- if .Values.prometheus.service.sessionAffinity }}
   sessionAffinity: {{ .Values.prometheus.service.sessionAffinity }}
 {{- end }}

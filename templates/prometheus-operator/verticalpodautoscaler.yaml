@@ -2,15 +2,15 @@
 apiVersion: autoscaling.k8s.io/v1
 kind: VerticalPodAutoscaler
 metadata:
-  name: {{ template "kube-prometheus-stack.fullname" . }}-operator
-  namespace: {{ template "kube-prometheus-stack.namespace" . }}
+  name: {{ template "unitest-stack.fullname" . }}-operator
+  namespace: {{ template "unitest-stack.namespace" . }}
   labels:
-    app: {{ template "kube-prometheus-stack.name" . }}-operator
-{{ include "kube-prometheus-stack.labels" . | indent 4 }}
+    app: {{ template "unitest-stack.name" . }}-operator
+{{ include "unitest-stack.labels" . | indent 4 }}
 spec:
   resourcePolicy:
     containerPolicies:
-    - containerName: {{ template "kube-prometheus-stack.name" . }}
+    - containerName: {{ template "unitest-stack.name" . }}
       {{- if .Values.prometheusOperator.verticalPodAutoscaler.controlledResources }}
       controlledResources: {{ .Values.prometheusOperator.verticalPodAutoscaler.controlledResources }}
       {{- end }}
@@ -25,7 +25,7 @@ spec:
   targetRef:
     apiVersion: apps/v1
     kind: Deployment
-    name:  {{ template "kube-prometheus-stack.fullname" . }}
+    name:  {{ template "unitest-stack.fullname" . }}
   {{- if .Values.prometheusOperator.verticalPodAutoscaler.updatePolicy }}
   updatePolicy:
     {{- if .Values.prometheusOperator.verticalPodAutoscaler.updatePolicy.updateMode }}

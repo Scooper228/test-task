@@ -7,10 +7,10 @@ items:
     kind: ServiceMonitor
     metadata:
       name: {{ .name }}
-      namespace: {{ template "kube-prometheus-stack.namespace" $ }}
+      namespace: {{ template "unitest-stack.namespace" $ }}
       labels:
-        app: {{ template "kube-prometheus-stack.name" $ }}-prometheus
-{{ include "kube-prometheus-stack.labels" $ | indent 8 }}
+        app: {{ template "unitest-stack.name" $ }}-prometheus
+{{ include "unitest-stack.labels" $ | indent 8 }}
         {{- if .additionalLabels }}
 {{ toYaml .additionalLabels | indent 8 }}
         {{- end }}

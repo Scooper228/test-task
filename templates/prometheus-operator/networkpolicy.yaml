@@ -1,13 +1,13 @@
 {{- if .Values.prometheusOperator.networkPolicy.enabled }}
-apiVersion: {{ template "kube-prometheus-stack.prometheus.networkPolicy.apiVersion" . }}
+apiVersion: {{ template "unitest-stack.prometheus.networkPolicy.apiVersion" . }}
 kind: NetworkPolicy
 metadata:
-  name: {{ template "kube-prometheus-stack.fullname" . }}-operator
-  namespace: {{ template "kube-prometheus-stack.namespace" . }}
+  name: {{ template "unitest-stack.fullname" . }}-operator
+  namespace: {{ template "unitest-stack.namespace" . }}
   labels:
-    app: {{ template "kube-prometheus-stack.name" . }}-operator
+    app: {{ template "unitest-stack.name" . }}-operator
 spec:
-  egress: 
+  egress:
     - {}
   ingress:
     - ports:
@@ -21,6 +21,6 @@ spec:
     - Ingress
   podSelector:
     matchLabels:
-      app: {{ template "kube-prometheus-stack.name" . }}-operator
+      app: {{ template "unitest-stack.name" . }}-operator
       release: {{ $.Release.Name | quote }}
 {{- end }}

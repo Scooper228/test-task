@@ -3,13 +3,13 @@
 kind: ClusterRole
 apiVersion: rbac.authorization.k8s.io/v1
 metadata:
-  name: {{ template "kube-prometheus-stack.fullname" . }}-prometheus-crd-view
+  name: {{ template "unitest-stack.fullname" . }}-prometheus-crd-view
   labels:
     rbac.authorization.k8s.io/aggregate-to-admin: "true"
     rbac.authorization.k8s.io/aggregate-to-edit: "true"
     rbac.authorization.k8s.io/aggregate-to-view: "true"
-    app: {{ template "kube-prometheus-stack.name" . }}-operator
-    {{- include "kube-prometheus-stack.labels" . | nindent 4 }}
+    app: {{ template "unitest-stack.name" . }}-operator
+    {{- include "unitest-stack.labels" . | nindent 4 }}
 rules:
 - apiGroups: ["monitoring.coreos.com"]
   resources: ["alertmanagers", "alertmanagerconfigs", "prometheuses", "prometheusrules", "servicemonitors", "podmonitors", "probes"]
@@ -18,12 +18,12 @@ rules:
 kind: ClusterRole
 apiVersion: rbac.authorization.k8s.io/v1
 metadata:
-  name: {{ template "kube-prometheus-stack.fullname" . }}-prometheus-crd-edit
+  name: {{ template "unitest-stack.fullname" . }}-prometheus-crd-edit
   labels:
     rbac.authorization.k8s.io/aggregate-to-edit: "true"
     rbac.authorization.k8s.io/aggregate-to-admin: "true"
-    app: {{ template "kube-prometheus-stack.name" . }}-operator
-    {{- include "kube-prometheus-stack.labels" . | nindent 4 }}
+    app: {{ template "unitest-stack.name" . }}-operator
+    {{- include "unitest-stack.labels" . | nindent 4 }}
 rules:
 - apiGroups: ["monitoring.coreos.com"]
   resources: ["alertmanagers", "alertmanagerconfigs", "prometheuses", "prometheusrules", "servicemonitors", "podmonitors", "probes"]

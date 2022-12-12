@@ -3,14 +3,14 @@
 apiVersion: policy/v1beta1
 kind: PodSecurityPolicy
 metadata:
-  name: {{ template "kube-prometheus-stack.fullname" . }}-operator
+  name: {{ template "unitest-stack.fullname" . }}-operator
   labels:
-    app: {{ template "kube-prometheus-stack.name" . }}-operator
+    app: {{ template "unitest-stack.name" . }}-operator
 {{- if .Values.global.rbac.pspAnnotations }}
   annotations:
 {{ toYaml .Values.global.rbac.pspAnnotations | indent 4 }}
 {{- end }}
-{{ include "kube-prometheus-stack.labels" . | indent 4 }}
+{{ include "unitest-stack.labels" . | indent 4 }}
 spec:
   privileged: false
   # Allow core volume types.

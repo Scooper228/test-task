@@ -2,10 +2,10 @@
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
-  name: {{ template "kube-prometheus-stack.fullname" . }}-operator
+  name: {{ template "unitest-stack.fullname" . }}-operator
   labels:
-    app: {{ template "kube-prometheus-stack.name" . }}-operator
-{{ include "kube-prometheus-stack.labels" . | indent 4 }}
+    app: {{ template "unitest-stack.name" . }}-operator
+{{ include "unitest-stack.labels" . | indent 4 }}
 rules:
 - apiGroups:
   - monitoring.coreos.com

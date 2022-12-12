@@ -2,11 +2,11 @@
 apiVersion: monitoring.coreos.com/v1
 kind: ServiceMonitor
 metadata:
-  name: {{ template "kube-prometheus-stack.fullname" . }}-operator
-  namespace: {{ template "kube-prometheus-stack.namespace" . }}
+  name: {{ template "unitest-stack.fullname" . }}-operator
+  namespace: {{ template "unitest-stack.namespace" . }}
   labels:
-    app: {{ template "kube-prometheus-stack.name" . }}-operator
-{{ include "kube-prometheus-stack.labels" . | indent 4 }}
+    app: {{ template "unitest-stack.name" . }}-operator
+{{ include "unitest-stack.labels" . | indent 4 }}
 {{- with .Values.prometheusOperator.serviceMonitor.additionalLabels }}
 {{ toYaml . | indent 4 }}
 {{- end }}
@@ -16,10 +16,10 @@ spec:
   - port: https
     scheme: https
     tlsConfig:
-      serverName: {{ template "kube-prometheus-stack.operator.fullname" . }}
+      serverName: {{ template "unitest-stack.operator.fullname" . }}
       ca:
         secret:
-          name: {{ template "kube-prometheus-stack.fullname" . }}-admission
+          name: {{ template "unitest-stack.fullname" . }}-admission
           key: {{ if .Values.prometheusOperator.admissionWebhooks.certManager.enabled }}ca.crt{{ else }}ca{{ end }}
           optional: false
   {{- else }}
@@ -39,9 +39,9 @@ spec:
 {{- end }}
   selector:
     matchLabels:
-      app: {{ template "kube-prometheus-stack.name" . }}-operator
+      app: {{ template "unitest-stack.name" . }}-operator
       release: {{ $.Release.Name | quote }}
   namespaceSelector:
     matchNames:
-      - {{ printf "%s" (include "kube-prometheus-stack.namespace" .) | quote }}
+      - {{ printf "%s" (include "unitest-stack.namespace" .) | quote }}
 {{- end }}

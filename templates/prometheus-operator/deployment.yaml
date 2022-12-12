@@ -1,14 +1,14 @@
-{{- $namespace := printf "%s" (include "kube-prometheus-stack.namespace" .) }}
-{{- $defaultKubeletSvcName := printf "%s-kubelet" (include "kube-prometheus-stack.fullname" .) }}
+{{- $namespace := printf "%s" (include "unitest-stack.namespace" .) }}
+{{- $defaultKubeletSvcName := printf "%s-kubelet" (include "unitest-stack.fullname" .) }}
 {{- if .Values.prometheusOperator.enabled }}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ template "kube-prometheus-stack.fullname" . }}-operator
-  namespace: {{ template "kube-prometheus-stack.namespace" . }}
+  name: {{ template "unitest-stack.fullname" . }}-operator
+  namespace: {{ template "unitest-stack.namespace" . }}
   labels:
-    app: {{ template "kube-prometheus-stack.name" . }}-operator
-{{ include "kube-prometheus-stack.labels" . | indent 4 }}
+    app: {{ template "unitest-stack.name" . }}-operator
+{{ include "unitest-stack.labels" . | indent 4 }}
 {{- if .Values.prometheusOperator.labels }}
 {{ toYaml .Values.prometheusOperator.labels | indent 4 }}
 {{- end }}
@@ -20,13 +20,13 @@ spec:
   replicas: 1
   selector:
     matchLabels:
-      app: {{ template "kube-prometheus-stack.name" . }}-operator
+      app: {{ template "unitest-stack.name" . }}-operator
       release: {{ $.Release.Name | quote }}
   template:
     metadata:
       labels:
-        app: {{ template "kube-prometheus-stack.name" . }}-operator
-{{ include "kube-prometheus-stack.labels" . | indent 8 }}
+        app: {{ template "unitest-stack.name" . }}-operator
+{{ include "unitest-stack.labels" . | indent 8 }}
 {{- if .Values.prometheusOperator.podLabels }}
 {{ toYaml .Values.prometheusOperator.podLabels | indent 8 }}
 {{- end }}
@@ -39,7 +39,7 @@ spec:
       priorityClassName: {{ .Values.prometheusOperator.priorityClassName }}
     {{- end }}
       containers:
-        - name: {{ template "kube-prometheus-stack.name" . }}
+        - name: {{ template "unitest-stack.name" . }}
           {{- $registry := .Values.global.imageRegistry | default .Values.prometheusOperator.image.registry -}}
           {{- if .Values.prometheusOperator.image.sha }}
           image: "{{ $registry }}/{{ .Values.prometheusOperator.image.repository }}:{{ .Values.prometheusOperator.image.tag }}@sha256:{{ .Values.prometheusOperator.image.sha }}"
@@ -138,7 +138,7 @@ spec:
         - name: tls-secret
           secret:
             defaultMode: 420
-            secretName: {{ template "kube-prometheus-stack.fullname" . }}-admission
+            secretName: {{ template "unitest-stack.fullname" . }}-admission
 {{- end }}
     {{- with .Values.prometheusOperator.dnsConfig }}
       dnsConfig:
@@ -148,7 +148,7 @@ spec:
       securityContext:
 {{ toYaml .Values.prometheusOperator.securityContext | indent 8 }}
 {{- end }}
-      serviceAccountName: {{ template "kube-prometheus-stack.operator.serviceAccountName" . }}
+      serviceAccountName: {{ template "unitest-stack.operator.serviceAccountName" . }}
 {{- if .Values.prometheusOperator.hostNetwork }}
       hostNetwork: true
       dnsPolicy: ClusterFirstWithHostNet

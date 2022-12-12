@@ -1,6 +1,6 @@
 {{/* vim: set filetype=mustache: */}}
 {{/* Expand the name of the chart. This is suffixed with -alertmanager, which means subtract 13 from longest 63 available */}}
-{{- define "kube-prometheus-stack.name" -}}
+{{- define "unitest-stack.name" -}}
 {{- default .Chart.Name .Values.nameOverride | trunc 50 | trimSuffix "-" -}}
 {{- end }}
 
@@ -11,7 +11,7 @@ If release name contains chart name it will be used as a full name.
 The components in this chart create additional resources that expand the longest created name strings.
 The longest name that gets created adds and extra 37 characters, so truncation should be 63-35=26.
 */}}
-{{- define "kube-prometheus-stack.fullname" -}}
+{{- define "unitest-stack.fullname" -}}
 {{- if .Values.fullnameOverride -}}
 {{- .Values.fullnameOverride | trunc 26 | trimSuffix "-" -}}
 {{- else -}}
@@ -25,50 +25,50 @@ The longest name that gets created adds and extra 37 characters, so truncation s
 {{- end -}}
 
 {{/* Fullname suffixed with operator */}}
-{{- define "kube-prometheus-stack.operator.fullname" -}}
-{{- printf "%s-operator" (include "kube-prometheus-stack.fullname" .) -}}
+{{- define "unitest-stack.operator.fullname" -}}
+{{- printf "%s-operator" (include "unitest-stack.fullname" .) -}}
 {{- end }}
 
 {{/* Prometheus custom resource instance name */}}
-{{- define "kube-prometheus-stack.prometheus.crname" -}}
+{{- define "unitest-stack.prometheus.crname" -}}
 {{- if .Values.cleanPrometheusOperatorObjectNames }}
-{{- include "kube-prometheus-stack.fullname" . }}
+{{- include "unitest-stack.fullname" . }}
 {{- else }}
-{{- print (include "kube-prometheus-stack.fullname" .) "-prometheus" }}
+{{- print (include "unitest-stack.fullname" .) "-prometheus" }}
 {{- end }}
 {{- end }}
 
 {{/* Prometheus apiVersion for networkpolicy */}}
-{{- define "kube-prometheus-stack.prometheus.networkPolicy.apiVersion" -}}
+{{- define "unitest-stack.prometheus.networkPolicy.apiVersion" -}}
 {{- print "networking.k8s.io/v1" -}}
 {{- end }}
 
 {{/* Alertmanager custom resource instance name */}}
-{{- define "kube-prometheus-stack.alertmanager.crname" -}}
+{{- define "unitest-stack.alertmanager.crname" -}}
 {{- if .Values.cleanPrometheusOperatorObjectNames }}
-{{- include "kube-prometheus-stack.fullname" . }}
+{{- include "unitest-stack.fullname" . }}
 {{- else }}
-{{- print (include "kube-prometheus-stack.fullname" .) "-alertmanager" -}}
+{{- print (include "unitest-stack.fullname" .) "-alertmanager" -}}
 {{- end }}
 {{- end }}
 
 {{/* Fullname suffixed with thanos-ruler */}}
-{{- define "kube-prometheus-stack.thanosRuler.fullname" -}}
-{{- printf "%s-thanos-ruler" (include "kube-prometheus-stack.fullname" .) -}}
+{{- define "unitest-stack.thanosRuler.fullname" -}}
+{{- printf "%s-thanos-ruler" (include "unitest-stack.fullname" .) -}}
 {{- end }}
 
 {{/* Create chart name and version as used by the chart label. */}}
-{{- define "kube-prometheus-stack.chartref" -}}
+{{- define "unitest-stack.chartref" -}}
 {{- replace "+" "_" .Chart.Version | printf "%s-%s" .Chart.Name -}}
 {{- end }}
 
 {{/* Generate basic labels */}}
-{{- define "kube-prometheus-stack.labels" }}
+{{- define "unitest-stack.labels" }}
 app.kubernetes.io/managed-by: {{ .Release.Service }}
 app.kubernetes.io/instance: {{ .Release.Name }}
 app.kubernetes.io/version: "{{ replace "+" "_" .Chart.Version }}"
-app.kubernetes.io/part-of: {{ template "kube-prometheus-stack.name" . }}
-chart: {{ template "kube-prometheus-stack.chartref" . }}
+app.kubernetes.io/part-of: {{ template "unitest-stack.name" . }}
+chart: {{ template "unitest-stack.chartref" . }}
 release: {{ $.Release.Name | quote }}
 heritage: {{ $.Release.Service | quote }}
 {{- if .Values.commonLabels}}
@@ -76,37 +76,37 @@ heritage: {{ $.Release.Service | quote }}
 {{- end }}
 {{- end }}
 
-{{/* Create the name of kube-prometheus-stack service account to use */}}
-{{- define "kube-prometheus-stack.operator.serviceAccountName" -}}
+{{/* Create the name of unitest-stack service account to use */}}
+{{- define "unitest-stack.operator.serviceAccountName" -}}
 {{- if .Values.prometheusOperator.serviceAccount.create -}}
-    {{ default (include "kube-prometheus-stack.operator.fullname" .) .Values.prometheusOperator.serviceAccount.name }}
+    {{ default (include "unitest-stack.operator.fullname" .) .Values.prometheusOperator.serviceAccount.name }}
 {{- else -}}
     {{ default "default" .Values.prometheusOperator.serviceAccount.name }}
 {{- end -}}
 {{- end -}}
 
 {{/* Create the name of prometheus service account to use */}}
-{{- define "kube-prometheus-stack.prometheus.serviceAccountName" -}}
+{{- define "unitest-stack.prometheus.serviceAccountName" -}}
 {{- if .Values.prometheus.serviceAccount.create -}}
-    {{ default (print (include "kube-prometheus-stack.fullname" .) "-prometheus") .Values.prometheus.serviceAccount.name }}
+    {{ default (print (include "unitest-stack.fullname" .) "-prometheus") .Values.prometheus.serviceAccount.name }}
 {{- else -}}
     {{ default "default" .Values.prometheus.serviceAccount.name }}
 {{- end -}}
 {{- end -}}
 
 {{/* Create the name of alertmanager service account to use */}}
-{{- define "kube-prometheus-stack.alertmanager.serviceAccountName" -}}
+{{- define "unitest-stack.alertmanager.serviceAccountName" -}}
 {{- if .Values.alertmanager.serviceAccount.create -}}
-    {{ default (print (include "kube-prometheus-stack.fullname" .) "-alertmanager") .Values.alertmanager.serviceAccount.name }}
+    {{ default (print (include "unitest-stack.fullname" .) "-alertmanager") .Values.alertmanager.serviceAccount.name }}
 {{- else -}}
     {{ default "default" .Values.alertmanager.serviceAccount.name }}
 {{- end -}}
 {{- end -}}
 
 {{/* Create the name of thanosRuler service account to use */}}
-{{- define "kube-prometheus-stack.thanosRuler.serviceAccountName" -}}
+{{- define "unitest-stack.thanosRuler.serviceAccountName" -}}
 {{- if .Values.thanosRuler.serviceAccount.create -}}
-    {{ default (include "kube-prometheus-stack.thanosRuler.fullname" .) .Values.thanosRuler.serviceAccount.name }}
+    {{ default (include "unitest-stack.thanosRuler.fullname" .) .Values.thanosRuler.serviceAccount.name }}
 {{- else -}}
     {{ default "default" .Values.thanosRuler.serviceAccount.name }}
 {{- end -}}
@@ -115,7 +115,7 @@ heritage: {{ $.Release.Service | quote }}
 {{/*
 Allow the release namespace to be overridden for multi-namespace deployments in combined charts
 */}}
-{{- define "kube-prometheus-stack.namespace" -}}
+{{- define "unitest-stack.namespace" -}}
   {{- if .Values.namespaceOverride -}}
     {{- .Values.namespaceOverride -}}
   {{- else -}}
@@ -126,7 +126,7 @@ Allow the release namespace to be overridden for multi-namespace deployments in 
 {{/*
 Use the grafana namespace override for multi-namespace deployments in combined charts
 */}}
-{{- define "kube-prometheus-stack-grafana.namespace" -}}
+{{- define "unitest-stack-grafana.namespace" -}}
   {{- if .Values.grafana.namespaceOverride -}}
     {{- .Values.grafana.namespaceOverride -}}
   {{- else -}}
@@ -137,7 +137,7 @@ Use the grafana namespace override for multi-namespace deployments in combined c
 {{/*
 Use the kube-state-metrics namespace override for multi-namespace deployments in combined charts
 */}}
-{{- define "kube-prometheus-stack-kube-state-metrics.namespace" -}}
+{{- define "unitest-stack-kube-state-metrics.namespace" -}}
   {{- if index .Values "kube-state-metrics" "namespaceOverride" -}}
     {{- index .Values "kube-state-metrics" "namespaceOverride" -}}
   {{- else -}}
@@ -148,7 +148,7 @@ Use the kube-state-metrics namespace override for multi-namespace deployments in
 {{/*
 Use the prometheus-node-exporter namespace override for multi-namespace deployments in combined charts
 */}}
-{{- define "kube-prometheus-stack-prometheus-node-exporter.namespace" -}}
+{{- define "unitest-stack-prometheus-node-exporter.namespace" -}}
   {{- if index .Values "prometheus-node-exporter" "namespaceOverride" -}}
     {{- index .Values "prometheus-node-exporter" "namespaceOverride" -}}
   {{- else -}}
@@ -157,13 +157,13 @@ Use the prometheus-node-exporter namespace override for multi-namespace deployme
 {{- end -}}
 
 {{/* Allow KubeVersion to be overridden. */}}
-{{- define "kube-prometheus-stack.kubeVersion" -}}
+{{- define "unitest-stack.kubeVersion" -}}
   {{- default .Capabilities.KubeVersion.Version .Values.kubeVersionOverride -}}
 {{- end -}}
 
 {{/* Get Ingress API Version */}}
-{{- define "kube-prometheus-stack.ingress.apiVersion" -}}
-  {{- if and (.Capabilities.APIVersions.Has "networking.k8s.io/v1") (semverCompare ">= 1.19-0" (include "kube-prometheus-stack.kubeVersion" .)) -}}
+{{- define "unitest-stack.ingress.apiVersion" -}}
+  {{- if and (.Capabilities.APIVersions.Has "networking.k8s.io/v1") (semverCompare ">= 1.19-0" (include "unitest-stack.kubeVersion" .)) -}}
       {{- print "networking.k8s.io/v1" -}}
   {{- else if .Capabilities.APIVersions.Has "networking.k8s.io/v1beta1" -}}
     {{- print "networking.k8s.io/v1beta1" -}}
@@ -173,19 +173,19 @@ Use the prometheus-node-exporter namespace override for multi-namespace deployme
 {{- end -}}
 
 {{/* Check Ingress stability */}}
-{{- define "kube-prometheus-stack.ingress.isStable" -}}
-  {{- eq (include "kube-prometheus-stack.ingress.apiVersion" .) "networking.k8s.io/v1" -}}
+{{- define "unitest-stack.ingress.isStable" -}}
+  {{- eq (include "unitest-stack.ingress.apiVersion" .) "networking.k8s.io/v1" -}}
 {{- end -}}
 
 {{/* Check Ingress supports pathType */}}
 {{/* pathType was added to networking.k8s.io/v1beta1 in Kubernetes 1.18 */}}
-{{- define "kube-prometheus-stack.ingress.supportsPathType" -}}
-  {{- or (eq (include "kube-prometheus-stack.ingress.isStable" .) "true") (and (eq (include "kube-prometheus-stack.ingress.apiVersion" .) "networking.k8s.io/v1beta1") (semverCompare ">= 1.18-0" (include "kube-prometheus-stack.kubeVersion" .))) -}}
+{{- define "unitest-stack.ingress.supportsPathType" -}}
+  {{- or (eq (include "unitest-stack.ingress.isStable" .) "true") (and (eq (include "unitest-stack.ingress.apiVersion" .) "networking.k8s.io/v1beta1") (semverCompare ">= 1.18-0" (include "unitest-stack.kubeVersion" .))) -}}
 {{- end -}}
 
 {{/* Get Policy API Version */}}
-{{- define "kube-prometheus-stack.pdb.apiVersion" -}}
-  {{- if and (.Capabilities.APIVersions.Has "policy/v1") (semverCompare ">= 1.21-0" (include "kube-prometheus-stack.kubeVersion" .)) -}}
+{{- define "unitest-stack.pdb.apiVersion" -}}
+  {{- if and (.Capabilities.APIVersions.Has "policy/v1") (semverCompare ">= 1.21-0" (include "unitest-stack.kubeVersion" .)) -}}
       {{- print "policy/v1" -}}
   {{- else -}}
     {{- print "policy/v1beta1" -}}
@@ -193,14 +193,14 @@ Use the prometheus-node-exporter namespace override for multi-namespace deployme
   {{- end -}}
 
 {{/* Get value based on current Kubernetes version */}}
-{{- define "kube-prometheus-stack.kubeVersionDefaultValue" -}}
+{{- define "unitest-stack.kubeVersionDefaultValue" -}}
   {{- $values := index . 0 -}}
   {{- $kubeVersion := index . 1 -}}
   {{- $old := index . 2 -}}
   {{- $new := index . 3 -}}
   {{- $default := index . 4 -}}
   {{- if kindIs "invalid" $default -}}
-    {{- if semverCompare $kubeVersion (include "kube-prometheus-stack.kubeVersion" $values) -}}
+    {{- if semverCompare $kubeVersion (include "unitest-stack.kubeVersion" $values) -}}
       {{- print $new -}}
     {{- else -}}
       {{- print $old -}}
@@ -211,21 +211,21 @@ Use the prometheus-node-exporter namespace override for multi-namespace deployme
 {{- end -}}
 
 {{/* Get value for kube-controller-manager depending on insecure scraping availability */}}
-{{- define "kube-prometheus-stack.kubeControllerManager.insecureScrape" -}}
+{{- define "unitest-stack.kubeControllerManager.insecureScrape" -}}
   {{- $values := index . 0 -}}
   {{- $insecure := index . 1 -}}
   {{- $secure := index . 2 -}}
   {{- $userValue := index . 3 -}}
-  {{- include "kube-prometheus-stack.kubeVersionDefaultValue" (list $values ">= 1.22-0" $insecure $secure $userValue) -}}
+  {{- include "unitest-stack.kubeVersionDefaultValue" (list $values ">= 1.22-0" $insecure $secure $userValue) -}}
 {{- end -}}
 
 {{/* Get value for kube-scheduler depending on insecure scraping availability */}}
-{{- define "kube-prometheus-stack.kubeScheduler.insecureScrape" -}}
+{{- define "unitest-stack.kubeScheduler.insecureScrape" -}}
   {{- $values := index . 0 -}}
   {{- $insecure := index . 1 -}}
   {{- $secure := index . 2 -}}
   {{- $userValue := index . 3 -}}
-  {{- include "kube-prometheus-stack.kubeVersionDefaultValue" (list $values ">= 1.23-0" $insecure $secure $userValue) -}}
+  {{- include "unitest-stack.kubeVersionDefaultValue" (list $values ">= 1.23-0" $insecure $secure $userValue) -}}
 {{- end -}}
 
 {{/*
@@ -243,7 +243,7 @@ global:
   - pullSecret1
   - pullSecret2
 */}}
-{{- define "kube-prometheus-stack.imagePullSecrets" -}}
+{{- define "unitest-stack.imagePullSecrets" -}}
 {{- range .Values.global.imagePullSecrets }}
   {{- if eq (typeOf .) "map[string]interface {}" }}
 - {{ toYaml . | trim }}

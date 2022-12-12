@@ -4,18 +4,18 @@
 apiVersion: v1
 kind: List
 metadata:
-  name: {{ include "kube-prometheus-stack.fullname" $ }}-prometheus-serviceperreplica
-  namespace: {{ template "kube-prometheus-stack.namespace" . }}
+  name: {{ include "unitest-stack.fullname" $ }}-prometheus-serviceperreplica
+  namespace: {{ template "unitest-stack.namespace" . }}
 items:
 {{- range $i, $e := until $count }}
   - apiVersion: v1
     kind: Service
     metadata:
-      name: {{ include "kube-prometheus-stack.fullname" $ }}-prometheus-{{ $i }}
-      namespace: {{ template "kube-prometheus-stack.namespace" $ }}
+      name: {{ include "unitest-stack.fullname" $ }}-prometheus-{{ $i }}
+      namespace: {{ template "unitest-stack.namespace" $ }}
       labels:
-        app: {{ include "kube-prometheus-stack.name" $ }}-prometheus
-{{ include "kube-prometheus-stack.labels" $ | indent 8 }}
+        app: {{ include "unitest-stack.name" $ }}-prometheus
+{{ include "unitest-stack.labels" $ | indent 8 }}
       {{- if $serviceValues.annotations }}
       annotations:
 {{ toYaml $serviceValues.annotations | indent 8 }}
@@ -42,8 +42,8 @@ items:
           targetPort: {{ $serviceValues.targetPort }}
       selector:
         app.kubernetes.io/name: prometheus
-        prometheus: {{ include "kube-prometheus-stack.prometheus.crname" $ }}
-        statefulset.kubernetes.io/pod-name: prometheus-{{ include "kube-prometheus-stack.prometheus.crname" $ }}-{{ $i }}
+        prometheus: {{ include "unitest-stack.prometheus.crname" $ }}
+        statefulset.kubernetes.io/pod-name: prometheus-{{ include "unitest-stack.prometheus.crname" $ }}-{{ $i }}
       type: "{{ $serviceValues.type }}"
 {{- end }}
 {{- end }}
