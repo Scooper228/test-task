@@ -1,0 +1,23 @@
+annotations:
+  artifacthub.io/links: |
+    - name: Chart Source
+      url: https://github.com/prometheus-community/helm-charts
+    - name: Upstream Project
+      url: https://github.com/prometheus-operator/kube-prometheus
+  artifacthub.io/operator: "true"
+apiVersion: v2
+appVersion: 0.60.1
+dependencies:
+- name: prometheus-blackbox-exporter
+  repository: https://prometheus-community.github.io/helm-charts
+  version: 7.1.*
+- condition: grafana.enabled
+  name: grafana
+  repository: https://grafana.github.io/helm-charts
+  version: 6.47.*
+name: unitest-chart
+sources:
+- https://github.com/prometheus-community/helm-charts
+- https://github.com/prometheus-operator/kube-prometheus
+type: application
+version: 1.0.0
